@@ -3,11 +3,11 @@ import { RegistrationPage } from './pages/RegistrationPage';
 import { Footer } from './components/Footer';
 import { DashboardPage } from './pages/DashboardPage';
 
- export default function AppRoutes(){
+ const App = () => {
   return (
     <>
       <Navbar/>
-      <main>
+      <main style={{ padding: '1rem' }}>
         <Routes>
           <Route path="/" element={<RegistrationPage/>}/>
           <Route path="/dashboard" element={<DashboardPage/>}/>
@@ -17,4 +17,5 @@ import { DashboardPage } from './pages/DashboardPage';
       </>
   )
 }
+export default App
 
