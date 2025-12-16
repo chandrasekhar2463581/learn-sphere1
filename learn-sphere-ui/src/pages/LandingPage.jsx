@@ -1,76 +1,86 @@
+
+import React from 'react';
 import { Link } from 'react-router-dom';
+
+const items = [
+  {
+    src: '/assets/web3.jpg',
+    title: 'Complete Web3 Cohort',
+    bullets: ['Web3 development', 'Smart contracts', 'Projects'],
+  },
+  {
+    src: '/assets/adhoc.jpg',
+    title: 'ADHOC',
+    bullets: ['Practice', 'Deep dives', 'Community'],
+  },
+  {
+    src: '/assets/webdev.jpg',
+    title: 'Complete Web Development Cohort',
+    bullets: ['Web development', 'Projects', 'Open source project setup'],
+  },
+  // add more as you like
+];
 
 const LandingPage = () => {
   return (
     <div>
-      {/* Hero Section */}
-      <section
-        style={{
-          background: 'linear-gradient(135deg, #4f46e5, #3b82f6)',
-          color: 'white',
-          textAlign: 'center',
-          padding: '6rem 2rem'
-        }}
-      >
-        <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>
-          Welcome to Student Portal
-        </h1>
-        <p style={{ fontSize: '1.25rem', marginBottom: '2rem' }}>
-          Your gateway to learning, progress, and success.
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-          <Link
-            to="/register"
-            style={{
-              background: 'white',
-              color: '#4f46e5',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              textDecoration: 'none',
-              fontWeight: 'bold'
-            }}
-          >
-            Register
-          </Link>
-          <Link
-            to="/login"
-            style={{
-              background: 'transparent',
-              border: '2px solid white',
-              color: 'white',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              textDecoration: 'none',
-              fontWeight: 'bold'
-            }}
-          >
-            Login
-          </Link>
+      {/* Hero */}
+      <section className="px-4 pt-16 pb-10 text-center">
+        <div className="mx-auto max-w-4xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
+            <span className="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">LearnSphere</span>, because{' '}
+            <span className="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">Curves</span>{' '}
+            ain’t enough!
+          </h1>
+
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-[var(--text)]/80">
+            A beginner-friendly platform for mastering programming skills.
+          </p>
+
+          <div className="mt-6 flex items-center justify-center gap-3">
+            <Link
+              to="/register"
+              className="px-4 py-2.5 rounded-lg font-semibold text-white bg-gradient-to-tr from-indigo-600 to-blue-500 shadow-lg hover:shadow-xl transition"
+            >
+              Explore Courses
+            </Link>
+            <Link
+              to="/notes"
+              className="px-4 py-2.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--card)] text-[var(--text)] hover:brightness-110 transition"
+            >
+              Explore Notes
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          padding: '4rem 2rem',
-          textAlign: 'center'
-        }}
-      >
-        <div style={{ maxWidth: '250px' }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>📚 Easy Registration</h3>
-          <p>Sign up quickly and access your dashboard instantly.</p>
+      {/* Auto‑sliding carousel (like the screenshot) */}
+      <section className="mx-auto max-w-7xl px-4 pb-8">
+        <div className="overflow-hidden hide-scrollbar">
+          {/* Duplicate items so the track can scroll continuously */}
+          <div className="marquee flex gap-4">
+            {[...items, ...items].map((item, idx) => (
+              <div
+                key={idx}
+                className="min-w-[280px] sm:min-w-[320px] rounded-xl border border-[var(--border)] bg-[var(--card)] shadow-xl overflow-hidden"
+              >
+                <div
+                  className="h-40 w-full bg-center bg-cover"
+                  style={{ backgroundImage: `url('${item.src}')` }}
+                />
+                <div className="p-4">
+                  <h3 className="text-sm font-bold">{item.title}</h3>
+                  {item.bullets?.length ? (
+                    <ul className="mt-2 text-sm text-[var(--text)]/80 list-disc list-inside space-y-0.5">
+                      {item.bullets.map((b, i) => <li key={i}>{b}</li>)}
+                    </ul>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div style={{ maxWidth: '250px' }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🎯 Track Progress</h3>
-          <p>Stay on top of your courses and assignments.</p>
-        </div>
-        <div style={{ maxWidth: '250px' }}>
-          <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>🌐 Access Anywhere</h3>
-          <p>Use the portal from any device, anytime.</p>
-        </div>
-      </section>
+           </section>
     </div>
   );
 };
