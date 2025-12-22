@@ -1,15 +1,24 @@
-
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 export const DashboardPage = () => {
   const location = useLocation();
-  const name = location.state?.name || 'Student';
+  let name = location.state?.name || "Student";
+  try {
+    const user = JSON.parse(localStorage.getItem("learnsphere_user") || "null");
+    if (user?.name) name = user.name;
+  } catch (e) {
+    // ignore
+  }
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-10">
-      <h2 className="text-2xl font-bold text-[var(--text)]">Welcome, {name}!</h2>
-      <p className="mt-2 text-[var(--text)]/80">Your courses will appear here</p>
+      <h2 className="text-2xl font-bold text-[var(--text)]">
+        Welcome, {name}!
+      </h2>
+      <p className="mt-2 text-[var(--text)]/80">
+        Your courses will appear here
+      </p>
 
       <div className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">
         <h3 className="text-lg font-semibold">Enrolled courses</h3>
@@ -30,5 +39,4 @@ export const DashboardPage = () => {
     </section>
   );
 };
-``
-    
+``;
