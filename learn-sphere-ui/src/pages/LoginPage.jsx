@@ -4,7 +4,7 @@ import { checkDuplicateEmail } from "../components/Api";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,9 +21,12 @@ const LoginPage = () => {
     }
 
     // Minimal login: save user to localStorage
-    const user = { name: name || "Student", email };
+    // Use registered studentName if available, else fallback to 'Student'
+    const registeredName = localStorage.getItem("studentName") || "Student";
+    const user = { name: registeredName, email };
     localStorage.setItem("learnsphere_user", JSON.stringify(user));
-    localStorage.setItem("studentName", user.name);
+    // notify same-window listeners
+    window.dispatchEvent(new Event("userUpdated"));
     navigate("/dashboard");
   };
 
@@ -40,12 +43,12 @@ const LoginPage = () => {
           required
         />
 
-        <label className="block mb-2 text-sm">Name (optional)</label>
+        <label className="block mb-2 text-sm">Password</label>
         <input
           className="w-full rounded-md px-3 py-2 mb-4 bg-[var(--card)] border border-[var(--border)]"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         {error ? (

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { PersonalInfo } from "../components/PersonalInfo";
 import { PAcademic } from "../components/PAcademic";
 import { GuardianInfo } from "../components/GuardianInfo";
@@ -8,6 +9,7 @@ export const Profile = () => {
   const [name, setName] = useState("Student");
   const [course, setCourse] = useState("");
   const [year, setYear] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const u = localStorage.getItem("studentName");
@@ -37,6 +39,19 @@ export const Profile = () => {
             className="px-3 py-2 rounded-md font-semibold bg-[var(--card)] border border-[var(--border)] text-[var(--text)]"
           >
             {editMode ? "Done" : "Edit Profile"}
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("learnsphere_user");
+              localStorage.removeItem("studentName");
+              // notify same-window listeners
+              window.dispatchEvent(new Event("userUpdated"));
+              navigate("/");
+              window.location.reload();
+            }}
+            className="px-3 py-2 rounded-md font-semibold bg-red-600 text-white hover:brightness-110 transition"
+          >
+            Logout
           </button>
         </div>
       </div>

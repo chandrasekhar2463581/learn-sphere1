@@ -51,6 +51,8 @@ export const RegistrationForm = () => {
     const user = { name: form.name, email: form.email };
     localStorage.setItem("learnsphere_user", JSON.stringify(user));
     localStorage.setItem("studentName", form.name);
+    // notify other parts of the app that the user was set
+    window.dispatchEvent(new Event("userUpdated"));
     navigate("/dashboard");
   };
 
