@@ -43,19 +43,14 @@ export const Navbar = () => {
           >
             <HiOutlineBell size={25} />
           </Link>
-          <Link
-            to="/"
-            className="px-3 py-2 rounded-lg font-semibold text-slate-100 border border-white/15 bg-white/5 hover:bg-white/10 transition"
-          >
-            Home
-          </Link>
+          
 
-          <Link
+          {/* <Link
             to="/dashboard"
             className="px-3 py-2 rounded-lg font-semibold text-white bg-gradient-to-tr from-indigo-600 to-blue-500 shadow-lg hover:shadow-xl transition"
           >
             Dashboard
-          </Link>
+          </Link> */}
 
           <Link
             to="/profile"

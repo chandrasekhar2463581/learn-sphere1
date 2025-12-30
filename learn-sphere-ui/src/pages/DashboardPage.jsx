@@ -1,10 +1,7 @@
-import React from 'react';
+
 import { Link, useLocation } from 'react-router-dom';
 import CourseOverviewPanel from "../components/CourseoverviewPanel/CourseOverviewPanel.jsx";
-// DELETE THE LINE BELOW (Line 7 in your error)
-// import { enrolledCourses as dataEnrolled } from "../data/courses"; 
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+
 
 export const DashboardPage = () => {
   const location = useLocation();
@@ -33,12 +30,12 @@ export const DashboardPage = () => {
       <h2 className="text-2xl font-bold text-[var(--text)]">Welcome, {name}!</h2>
       <p className="mt-2 text-[var(--text)]/80">Your courses will appear here</p>
       
-      <h2 className="text-2xl font-bold text-[var(--text)]">
+      {/* <h2 className="text-2xl font-bold text-[var(--text)]">
         Welcome, {name}!
       </h2>
       <p className="mt-2 text-[var(--text)]/80">
         Your courses will appear here
-      </p>
+      </p> */}
 
       <div className="mt-6 rounded-xl border border-[var(--border)] bg-[var(--card)] p-5">
         <CourseOverviewPanel allCourses={allCourses} enrolledCourses={enrolledCourses} />
@@ -52,5 +49,4 @@ export const DashboardPage = () => {
     </section>
   );
 };
-};
-``;
+
