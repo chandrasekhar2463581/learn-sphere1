@@ -35,7 +35,7 @@ export const Navbar = () => {
     <nav className="sticky top-0 z-50 backdrop-blur-md bg-black/40 border-b border-white/10">
       <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
         {/* Brand */}
-        <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center gap-2">
           <span className="h-7 w-7 rounded-full bg-gradient-to-tr from-indigo-600 to-blue-500 shadow-[0_0_24px_rgba(66,127,255,0.6)]" />
           <span className="font-bold tracking-tight">
             Learn
@@ -43,7 +43,7 @@ export const Navbar = () => {
               Sphere
             </span>
           </span>
-        </div>
+        </Link>
 
         {/* Actions: show only Register/Login when logged out; Notifications/Profile when logged in */}
         <div className="flex items-center gap-3">
