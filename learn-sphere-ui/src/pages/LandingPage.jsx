@@ -44,12 +44,7 @@ const LandingPage = () => {
             >
               Explore Courses
             </Link>
-            <Link
-              to="/login"
-              className="px-4 py-2.5 rounded-lg font-semibold border border-[var(--border)] bg-[var(--card)] text-[var(--text)] hover:brightness-110 transition"
-            >
-              Login
-            </Link>
+            
           </div>
         </div>
       </section>
