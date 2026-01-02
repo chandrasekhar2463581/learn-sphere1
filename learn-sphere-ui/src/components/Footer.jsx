@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 
 export const Footer = () => {
   const year = new Date().getFullYear();
@@ -9,4 +8,4 @@ export const Footer = () => {
     </footer>
   );
 };
-``
+``;
