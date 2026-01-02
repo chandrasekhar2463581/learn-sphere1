@@ -84,16 +84,13 @@ const GlassSyllabus = () => {
             </section>
           </div>
 
-          {/* RIGHT COLUMN */}
           <div style={styles.rightColumn}>
-            {/* ACTION CARD */}
             <div style={styles.glassCard}>
               <h3 style={styles.cardHeading}>Limited Time Offer</h3>
               <p style={styles.priceText}>{courseData.price}</p>
               <button style={styles.buyBtn}>Enroll Now</button>
             </div>
 
-            {/* FAQ SECTION */}
             <div style={{...styles.glassCard, marginTop: '20px'}}>
               <h3 style={styles.cardHeading}>Frequently Asked Questions</h3>
               <div style={styles.faqList}>
