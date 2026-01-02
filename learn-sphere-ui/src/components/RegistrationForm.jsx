@@ -20,13 +20,13 @@ export const RegistrationForm = () => {
     const newErrors = {};
 
     if (!form.name.trim()) newErrors.name = "Name is required";
+
     if (!form.email.trim()) newErrors.email = "Email is required";
     else if (!isEmail(form.email)) newErrors.email = "Invalid email";
 
     const pwdIssues = passwordIssues(form.password);
     if (!form.password) newErrors.password = "Password is required";
-    else if (pwdIssues.length)
-      newErrors.password = `Password must include: ${pwdIssues.join(", ")}`;
+    else if (pwdIssues.length) newErrors.password = pwdIssues; // array of issues
 
     if (!newErrors.email) {
       const isDup = await checkDuplicateEmail(form.email);
@@ -47,10 +47,16 @@ export const RegistrationForm = () => {
       return;
     }
 
-    await registerUser({ name: form.name, email: form.email });
+    await registerUser({
+      name: form.name,
+      email: form.email,
+      password: form.password, // include password in API call
+    });
+
     const user = { name: form.name, email: form.email };
     localStorage.setItem("learnsphere_user", JSON.stringify(user));
     localStorage.setItem("studentName", form.name);
+
     // notify other parts of the app that the user was set
     window.dispatchEvent(new Event("userUpdated"));
     navigate("/dashboard");

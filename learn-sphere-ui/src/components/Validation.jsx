@@ -1,13 +1,14 @@
-import React from 'react'
+// Email validation
+export const isEmail = (value) =>
+  /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(value);
 
-export const isEmail = (value) =>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-
-export const passwordIssues=(value)=>{
-    const issues=[]
-    if(value.length<10) issues.push("atleast 10 characters")
-    if (!/[A-Z]/.test(value)) issues.push("one uppercase")
-    if (!/[a-z]/.test(value)) issues.push("one lowercase")
-    if (!/[!@#$%^&*]/.test(value)) issues.push("One special character")
-
-    return issues
-}
+// Password validation
+export const passwordIssues = (value) => {
+  const issues = [];
+  if (value.length < 10) issues.push("At least 10 characters");
+  if (!/[A-Z]/.test(value)) issues.push("At least one uppercase letter");
+  if (!/[a-z]/.test(value)) issues.push("At least one lowercase letter");
+  if (!/[0-9]/.test(value)) issues.push("At least one number");
+  if (!/[!@#$%^&*]/.test(value)) issues.push("At least one special character (!@#$%^&*)");
+  return issues;
+};
