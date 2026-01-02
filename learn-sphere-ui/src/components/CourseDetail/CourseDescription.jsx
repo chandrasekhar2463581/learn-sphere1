@@ -35,6 +35,8 @@ const CourseDescription = ({ description, objectives }) => {
             <li>Apply concepts through practical exercises</li>
             <li>Prepare for advanced learning or certification</li>
           </>
+
+          
         )}
       </ul>
     </div>
