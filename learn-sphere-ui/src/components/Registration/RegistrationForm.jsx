@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { isEmail, passwordIssues } from "./Validation";
+import { isEmail, passwordIssues, normalizeEmail } from "./Validation";
 import { checkDuplicateEmail, registerUser } from "./Api";
 import { InputField } from "./InputField";
 
@@ -9,7 +9,7 @@ export const RegistrationForm = () => {
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -26,7 +26,8 @@ export const RegistrationForm = () => {
       if (!value.trim()) error = "Email is required";
       else if (!isEmail(value)) error = "Invalid email";
       else {
-        const isDup = await checkDuplicateEmail(value);
+        const normalized = normalizeEmail(value);
+        const isDup = await checkDuplicateEmail(normalized);
         if (isDup) error = "Email already exists";
       }
     }
@@ -73,11 +74,11 @@ export const RegistrationForm = () => {
 
     await registerUser({
       name: form.name,
-      email: form.email,
-      password: form.password
+      email: normalizeEmail(form.email),
+      password: form.password,
     });
 
-    const user = { name: form.name, email: form.email };
+    const user = { name: form.name, email: normalizeEmail(form.email) };
     localStorage.setItem("learnsphere_user", JSON.stringify(user));
     localStorage.setItem("studentName", form.name);
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { checkDuplicateEmail } from "../components/registration/Api";
+import { normalizeEmail } from "../components/registration/Validation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const exists = await checkDuplicateEmail(email);
+    const exists = await checkDuplicateEmail(normalizeEmail(email));
     setLoading(false);
     if (!exists) {
       setError("No account found for this email. Please register.");
@@ -23,7 +24,8 @@ const LoginPage = () => {
     // Minimal login: save user to localStorage
     // Use registered studentName if available, else fallback to 'Student'
     const registeredName = localStorage.getItem("studentName") || "Student";
-    const user = { name: registeredName, email };
+    const normalized = normalizeEmail(email);
+    const user = { name: registeredName, email: normalized };
     localStorage.setItem("learnsphere_user", JSON.stringify(user));
     // notify same-window listeners
     window.dispatchEvent(new Event("userUpdated"));
