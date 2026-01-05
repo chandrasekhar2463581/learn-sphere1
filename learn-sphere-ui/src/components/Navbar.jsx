@@ -49,14 +49,6 @@ export const Navbar = () => {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              {user.role === "admin" && (
-                <Link
-                  to="/admin"
-                  className="px-3 py-2 rounded-lg font-semibold border border-[var(--border)] bg-[var(--card)] text-[var(--text)] hover:brightness-110 transition"
-                >
-                  Admin
-                </Link>
-              )}
               <Link
                 to="/notifications"
                 className="p-2 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 transition text-slate-100"

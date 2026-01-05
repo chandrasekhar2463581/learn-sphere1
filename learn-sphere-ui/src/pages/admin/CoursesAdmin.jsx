@@ -25,6 +25,60 @@ const CATEGORY_OPTIONS = [
   "Languages",
 ];
 
+const CourseCardMenu = ({ course, onEdit, onDelete }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isOpen]);
+
+  return (
+    <div className="relative" ref={menuRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-2 hover:bg-white/10 rounded-md transition"
+        title="More actions"
+      >
+        <span className="text-lg">⋮</span>
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-1 w-48 bg-black/80 border border-white/15 rounded-md shadow-lg z-50">
+          <button
+            onClick={() => {
+              onEdit(course);
+              setIsOpen(false);
+            }}
+            className="w-full text-left px-4 py-2 text-sm hover:bg-white/10 transition first:rounded-t-md"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => {
+              onDelete(course.id);
+              setIsOpen(false);
+            }}
+            className="w-full text-left px-4 py-2 text-sm hover:bg-red-600/20 text-red-400 transition last:rounded-b-md"
+          >
+            Delete
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const SearchableSelect = ({ value, onChange, options, placeholder }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -513,34 +567,46 @@ export default function CoursesAdmin() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {courses.map((course) => (
-            <article
-              key={course.id}
-              className="rounded-xl border overflow-hidden group flex flex-col"
-              style={{
-                borderColor: "var(--border)",
-                background: "var(--card)",
-              }}
-            >
-              {/* Thumbnail */}
-              <div
-                className="h-40 w-full bg-center bg-cover"
+        {!editing && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {courses.map((course) => (
+              <article
+                key={course.id}
+                className="rounded-xl border overflow-hidden group flex flex-col"
                 style={{
-                  backgroundImage: course.thumbnail
-                    ? `url('${course.thumbnail}')`
-                    : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                  backgroundColor: course.thumbnail ? "transparent" : "#667eea",
+                  borderColor: "var(--border)",
+                  background: "var(--card)",
                 }}
-                aria-label={course.title}
-              />
+              >
+                {/* Thumbnail */}
+                <div
+                  className="h-40 w-full bg-center bg-cover"
+                  style={{
+                    backgroundImage: course.thumbnail
+                      ? `url('${course.thumbnail}')`
+                      : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    backgroundColor: course.thumbnail
+                      ? "transparent"
+                      : "#667eea",
+                  }}
+                  aria-label={course.title}
+                />
 
-              {/* Body */}
-              <div className="p-4 flex flex-col flex-1">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-semibold text-base">{course.title}</h3>
+                {/* Body */}
+                <div className="p-4 flex flex-col flex-1">
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <h3 className="font-semibold text-base flex-1">
+                      {course.title}
+                    </h3>
+                    <CourseCardMenu
+                      course={course}
+                      onEdit={onEdit}
+                      onDelete={onDelete}
+                    />
+                  </div>
+
                   <span
-                    className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold whitespace-nowrap ${
+                    className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold whitespace-nowrap mb-2 w-fit ${
                       course.status === "published"
                         ? "bg-green-600/20 text-green-400"
                         : course.status === "draft"
@@ -550,56 +616,34 @@ export default function CoursesAdmin() {
                   >
                     {course.status}
                   </span>
-                </div>
 
-                <p className="text-xs text-[var(--text)]/70 mb-2">
-                  Slug: {course.slug}
-                </p>
-                <p className="text-sm text-[var(--text)]/80 mb-2 line-clamp-2">
-                  {course.smallDescription}
-                </p>
+                  <p className="text-sm text-[var(--text)]/80 mb-3 line-clamp-3">
+                    {course.smallDescription}
+                  </p>
 
-                <div className="text-xs text-[var(--text)]/70 space-y-1 mb-3 flex-1">
-                  <p>
-                    Level: <span className="font-semibold">{course.level}</span>
-                  </p>
-                  <p>
-                    Duration:{" "}
-                    <span className="font-semibold">{course.duration}</span>
-                  </p>
-                  {course.categories?.length > 0 && (
+                  <div className="text-xs text-[var(--text)]/70 space-y-1 mb-3 flex-1">
                     <p>
-                      Categories:{" "}
-                      <span className="font-semibold">
-                        {course.categories.join(", ")}
-                      </span>
+                      Level:{" "}
+                      <span className="font-semibold">{course.level}</span>
                     </p>
-                  )}
+                    <p>
+                      Duration:{" "}
+                      <span className="font-semibold">{course.duration}</span>
+                    </p>
+                    {course.categories?.length > 0 && (
+                      <p>
+                        Categories:{" "}
+                        <span className="font-semibold">
+                          {course.categories.join(", ")}
+                        </span>
+                      </p>
+                    )}
+                  </div>
                 </div>
-
-                <div className="flex gap-2 mt-auto">
-                  <button
-                    onClick={() => onEdit(course)}
-                    className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold text-white bg-gradient-to-tr from-indigo-600 to-blue-500 shadow hover:shadow-md transition"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => onDelete(course.id)}
-                    className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold border transition"
-                    style={{
-                      borderColor: "var(--border)",
-                      background: "var(--card)",
-                      color: "var(--text)",
-                    }}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
