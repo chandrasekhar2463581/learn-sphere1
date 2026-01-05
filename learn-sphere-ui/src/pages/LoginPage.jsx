@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { checkDuplicateEmail } from "../components/registration/Api";
+import {
+  checkDuplicateEmail,
+  getUserByEmail,
+} from "../components/registration/Api";
 import { normalizeEmail } from "../components/registration/Validation";
+import { InputField } from "../components/registration/InputField";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,22 +18,43 @@ const LoginPage = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const exists = await checkDuplicateEmail(normalizeEmail(email));
+    const normalized = normalizeEmail(email);
+    const exists = await checkDuplicateEmail(normalized);
     setLoading(false);
     if (!exists) {
       setError("No account found for this email. Please register.");
       return;
     }
 
-    // Minimal login: save user to localStorage
-    // Use registered studentName if available, else fallback to 'Student'
-    const registeredName = localStorage.getItem("studentName") || "Student";
-    const normalized = normalizeEmail(email);
-    const user = { name: registeredName, email: normalized };
+    // Retrieve user info (including role and optional password) from mock API
+    const stored = await getUserByEmail(normalized);
+
+    // If the stored user has a password set (seeded admin or registered user), require it.
+    if (stored?.password) {
+      if (!password) {
+        setError("Password is required for this account");
+        return;
+      }
+      if (password !== stored.password) {
+        setError("Incorrect password");
+        return;
+      }
+    }
+
+    const registeredName =
+      stored?.name || localStorage.getItem("studentName") || "Student";
+    const user = {
+      name: registeredName,
+      email: normalized,
+      role: stored?.role || "student",
+    };
     localStorage.setItem("learnsphere_user", JSON.stringify(user));
     // notify same-window listeners
     window.dispatchEvent(new Event("userUpdated"));
-    navigate("/dashboard");
+
+    // Redirect admins to the admin area
+    if (user.role === "admin") navigate("/admin");
+    else navigate("/dashboard");
   };
 
   return (
@@ -45,9 +70,9 @@ const LoginPage = () => {
           required
         />
 
-        <label className="block mb-2 text-sm">Password</label>
-        <input
-          className="w-full rounded-md px-3 py-2 mb-4 bg-[var(--card)] border border-[var(--border)]"
+        <InputField
+          label="Password"
+          name="password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}

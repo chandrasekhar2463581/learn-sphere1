@@ -9,7 +9,12 @@ import NotificationsList from "./components/NotificationsList";
 import ModulePage from "./components/dashboard/ModulePage";
 import NotEnrolledPage from "./components/dashboard/NotEnrolledPage";
 import { ProtectedRoute } from "./components/dashboard/ProtectedRoute";
+import ProtectedAdminRoute from "./components/admin/ProtectedAdminRoute";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProfile from "./pages/admin/AdminProfile";
 import LoginPage from "./pages/LoginPage";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 export default function App() {
   return (
@@ -21,6 +26,8 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegistrationPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<NotificationsList />} />
@@ -40,6 +47,23 @@ export default function App() {
               <ProtectedRoute>
                 <DashboardPage />
               </ProtectedRoute>
+            }
+          />
+          {/* Admin area (requires admin role) */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboard />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/profile"
+            element={
+              <ProtectedAdminRoute>
+                <AdminProfile />
+              </ProtectedAdminRoute>
             }
           />
           <Route

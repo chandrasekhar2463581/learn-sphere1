@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { InputField } from "../registration/InputField";
 
 export const PersonalInfo = () => {
   const [name, setName] = useState("");
@@ -100,11 +101,13 @@ export const PersonalInfo = () => {
           className={fieldClass}
         />
 
-        <input
+        <InputField
+          label="Password"
+          name="studentPassword"
           type="password"
-          placeholder="Password (min 8 characters)"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password (min 8 characters)"
           className={fieldClass}
         />
       </div>
